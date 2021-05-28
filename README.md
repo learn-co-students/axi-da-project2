@@ -1,4 +1,4 @@
-# Linear Regression - Cumulative Lab
+# LEGO Regression Project
 
 ## Introduction 
 
@@ -12,13 +12,13 @@ You will be able to:
 * Evaluate your final model and interpret its predictive performance metrics
 * Apply an inferential lens to interpret relationships between variables identified by the model
 
-## Your Task: Develop a LEGO Pricing Algorithm
+# Task: Develop a LEGO Pricing Algorithm
 
 ![pile of legos](images/legos.jpg)
 
 Photo by <a href="https://unsplash.com/@xavi_cabrera?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Xavi Cabrera</a> on <a href="/s/photos/lego?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 
-### Business Understanding
+## Business Understanding
 
 You just got hired by LEGO! Your first project is going to be to develop a pricing algorithm to help set a target price for new LEGO sets that are released to market. The goal is to save the company some time and to help ensure consistency in pricing between new products and past products.
 
@@ -26,15 +26,15 @@ The main purpose of this algorithm is *predictive*, meaning that **your model sh
 
 The secondary purpose of this algorithm is *inferential*, meaning that **your model should be able to tell us something about the relationship between the attributes of a LEGO set and its price**. You will apply your knowledge of statistics to include appropriate caveats about these relationships.
 
-### Data Understanding
+## Data Understanding
 
 You have access to a dataset containing over 700 LEGO sets released in the past, including attributes of those sets as well as their prices. You can assume that the numeric attributes in this dataset have already been preprocessed appropriately for modeling (i.e. that there are no missing or invalid values), while the text attributes are simply there for your visual inspection and should not be used for modeling. Also, note that some of these attributes cannot be used in your analysis because they will be unavailable for future LEGO products or are otherwise irrelevant.
 
 You do not need to worry about inflation or differences in currency; just predict the same kinds of prices as are present in the past data, which have already been converted to USD.
 
-### Loading the Data
+## Loading the Data
 
-In the cells below, we load both the train and test datasets for you. Remember, both of these datasets contain prices, but we are using the test set as a stand-in for future LEGO products where the price has not yet been determined. The model will be trained on just the train set, then we will compare its predictions on the test set to the actual prices on the test set.
+Load both the train and test datasets from the `data` folder in this repository, then split them into feature and target DataFrames. Remember, both of these datasets contain prices, but we are using the test set as a stand-in for future LEGO products where the price has not yet been determined. The model will be trained on just the train set, then we will compare its predictions on the test set to the actual prices on the test set.
 
 
 ```python
@@ -46,8 +46,6 @@ import matplotlib.pyplot as plt
 
 ```python
 
-import pandas as pd
-
 train = pd.read_csv("data/lego_train.csv")
 test = pd.read_csv("data/lego_test.csv")
 
@@ -56,8 +54,16 @@ y_train = train["list_price"]
 
 X_test = test.drop("list_price", axis=1)
 y_test = test["list_price"]
+```
 
-X_train
+## Exploring the Data
+
+Inspect your data to start making sense of it
+
+
+```python
+
+train.head()
 ```
 
 
@@ -91,6 +97,7 @@ X_train
       <th>difficulty_level</th>
       <th>num_reviews</th>
       <th>star_rating</th>
+      <th>list_price</th>
     </tr>
   </thead>
   <tbody>
@@ -106,6 +113,7 @@ X_train
       <td>1</td>
       <td>3.0</td>
       <td>4.3</td>
+      <td>49.990</td>
     </tr>
     <tr>
       <th>1</th>
@@ -119,6 +127,7 @@ X_train
       <td>1</td>
       <td>3.0</td>
       <td>4.7</td>
+      <td>30.362</td>
     </tr>
     <tr>
       <th>2</th>
@@ -132,6 +141,7 @@ X_train
       <td>1</td>
       <td>3.0</td>
       <td>5.0</td>
+      <td>19.990</td>
     </tr>
     <tr>
       <th>3</th>
@@ -145,6 +155,7 @@ X_train
       <td>1</td>
       <td>5.0</td>
       <td>4.4</td>
+      <td>34.990</td>
     </tr>
     <tr>
       <th>4</th>
@@ -158,119 +169,149 @@ X_train
       <td>1</td>
       <td>9.0</td>
       <td>4.7</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>553</th>
-      <td>71343</td>
-      <td>The Powerpuff Girls™ Fun Pack</td>
-      <td>Save the world before bedtime in the LEGO® DIM...</td>
-      <td>DIMENSIONS™</td>
-      <td>56</td>
-      <td>7.0</td>
-      <td>14.0</td>
-      <td>1</td>
-      <td>1.0</td>
-      <td>5.0</td>
-    </tr>
-    <tr>
-      <th>554</th>
-      <td>75114</td>
-      <td>First Order Stormtrooper™</td>
-      <td>Prepare for battle against the Resistance!</td>
-      <td>Star Wars™</td>
-      <td>81</td>
-      <td>7.0</td>
-      <td>14.0</td>
-      <td>0</td>
-      <td>10.0</td>
-      <td>4.7</td>
-    </tr>
-    <tr>
-      <th>555</th>
-      <td>41597</td>
-      <td>Go Brick Me</td>
-      <td>Build a LEGO® BrickHeadz version of yourself!</td>
-      <td>BrickHeadz</td>
-      <td>708</td>
-      <td>10.0</td>
-      <td>99.0</td>
-      <td>2</td>
-      <td>13.0</td>
-      <td>4.8</td>
-    </tr>
-    <tr>
-      <th>556</th>
-      <td>75116</td>
-      <td>Finn</td>
-      <td>Practice your warrior skills with Finn!</td>
-      <td>Star Wars™</td>
-      <td>98</td>
-      <td>8.0</td>
-      <td>14.0</td>
-      <td>1</td>
-      <td>1.0</td>
-      <td>5.0</td>
-    </tr>
-    <tr>
-      <th>557</th>
-      <td>76097</td>
-      <td>Lex Luthor™ Mech Takedown</td>
-      <td>Power up for battle against the Lex Luthor™ Mech!</td>
-      <td>DC Comics™ Super Heroes</td>
-      <td>406</td>
-      <td>7.0</td>
-      <td>14.0</td>
-      <td>2</td>
-      <td>5.0</td>
-      <td>4.8</td>
+      <td>19.990</td>
     </tr>
   </tbody>
 </table>
-<p>558 rows × 10 columns</p>
 </div>
 
 
 
-Some more information about the features of this dataset:
+Produce high-level descriptive information about your training data
 
 
 ```python
-X_train.info()
+
+train.describe()
 ```
 
-    <class 'pandas.core.frame.DataFrame'>
-    RangeIndex: 558 entries, 0 to 557
-    Data columns (total 10 columns):
-     #   Column            Non-Null Count  Dtype  
-    ---  ------            --------------  -----  
-     0   prod_id           558 non-null    int64  
-     1   set_name          558 non-null    object 
-     2   prod_desc         544 non-null    object 
-     3   theme_name        558 non-null    object 
-     4   piece_count       558 non-null    int64  
-     5   min_age           558 non-null    float64
-     6   max_age           558 non-null    float64
-     7   difficulty_level  558 non-null    int64  
-     8   num_reviews       490 non-null    float64
-     9   star_rating       490 non-null    float64
-    dtypes: float64(4), int64(3), object(3)
-    memory usage: 43.7+ KB
 
 
-A visualization of the distribution of the target variable:
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>prod_id</th>
+      <th>piece_count</th>
+      <th>min_age</th>
+      <th>max_age</th>
+      <th>difficulty_level</th>
+      <th>num_reviews</th>
+      <th>star_rating</th>
+      <th>list_price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>5.580000e+02</td>
+      <td>558.000000</td>
+      <td>558.000000</td>
+      <td>558.000000</td>
+      <td>558.000000</td>
+      <td>490.000000</td>
+      <td>490.000000</td>
+      <td>558.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>5.575458e+04</td>
+      <td>432.806452</td>
+      <td>6.928315</td>
+      <td>27.577061</td>
+      <td>1.514337</td>
+      <td>16.857143</td>
+      <td>4.516327</td>
+      <td>48.645385</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.241344e+05</td>
+      <td>730.305859</td>
+      <td>2.987146</td>
+      <td>33.747031</td>
+      <td>0.801015</td>
+      <td>36.654636</td>
+      <td>0.487826</td>
+      <td>71.168371</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>6.300000e+02</td>
+      <td>1.000000</td>
+      <td>1.500000</td>
+      <td>3.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>2.600000</td>
+      <td>2.490000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>2.118475e+04</td>
+      <td>91.000000</td>
+      <td>5.000000</td>
+      <td>12.000000</td>
+      <td>1.000000</td>
+      <td>2.000000</td>
+      <td>4.300000</td>
+      <td>14.990000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>4.207350e+04</td>
+      <td>199.500000</td>
+      <td>7.000000</td>
+      <td>14.000000</td>
+      <td>2.000000</td>
+      <td>6.000000</td>
+      <td>4.600000</td>
+      <td>29.990000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>7.125325e+04</td>
+      <td>467.000000</td>
+      <td>8.000000</td>
+      <td>14.000000</td>
+      <td>2.000000</td>
+      <td>14.000000</td>
+      <td>5.000000</td>
+      <td>49.990000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2.000431e+06</td>
+      <td>7541.000000</td>
+      <td>16.000000</td>
+      <td>99.000000</td>
+      <td>4.000000</td>
+      <td>367.000000</td>
+      <td>5.000000</td>
+      <td>799.990000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Visualize the distribution of the target variable
 
 
 ```python
@@ -285,48 +326,56 @@ ax.set_title("Distribution of LEGO Set Prices");
 ```
 
 
-![png](index_files/index_8_0.png)
+![png](index_files/index_10_0.png)
 
 
-### Requirements
+## Requirements
 
-#### 1. Interpret a Correlation Heatmap to Build a Baseline Model
+### 1. Interpret a Correlation Heatmap to Build a Baseline Model
 
 You'll start modeling by choosing the feature that is most correlated with our target, and build and evaluate a linear regression model with just that feature.
 
-#### 2. Build a Model with All Relevant Numeric Features
+### 2. Build a Model with All Relevant Numeric Features
 
 Now, add in the rest of the relevant numeric features of the training data, and compare that model's performance to the performance of the baseline model.
 
-#### 3. Select the Best Combination of Features
+### 3. Select the Best Combination of Features
 
 Using statistical properties of the fitted model, the `sklearn.feature_selection` submodule, and some custom code, find the combination of relevant numeric features that produces the best scores.
 
-#### 4. Build and Evaluate a Final Predictive Model
+### 4. Build and Evaluate a Final Predictive Model
 
 Using the best features selected in the previous step, create a final model, fit it on all rows of the training dataset, and evaluate it on all rows of the test dataset in terms of both r-squared and RMSE.
 
-#### 5. Interpret the Final Model
+### 5. Interpret the Final Model
 
 Determine what, if any, understanding of the underlying relationship between variables can be determined with this model. This means you will need to interpret the model coefficients as well as checking whether the assumptions of linear regression have been met.
 
-## 1. Interpret a Correlation Heatmap to Build a Baseline Model
+### 6. Create Presentation Notebook
 
-### Interpreting a Correlation Heatmap
+Edit this notebook or create a new one to showcase your work.
 
-The code below produces a heatmap showing the correlations between all of the numeric values in our training data. The x and y axis labels indicate the pair of values that are being compared, and then the color and the number are both representing the correlation. Color is used here to make it easier to find the largest/smallest numbers — you could perform this analysis with just `train.corr()` if all you wanted was the correlation values.
+# 1. Interpret a Correlation Heatmap to Build a Baseline Model
 
-The very left column of the plot is the most important, since it shows correlations between the target (listing price) and other attributes.
+## Correlation Heatmap
+
+Produce a heatmap showing the correlations between all of the numeric values in our training data. The x and y axis labels should indicate the pair of values that are being compared, and then the color and the number should represent the correlation. 
+
+The most important column or row shows the correlations between the target (listing price) and other attributes.
 
 
 ```python
 
 import seaborn as sns
 import numpy as np
+```
+
+
+```python
 
 # Create a df with the target as the first column,
 # then compute the correlation matrix
-heatmap_data = pd.concat([y_train, X_train], axis=1)
+heatmap_data = train
 corr = heatmap_data.corr()
 
 # Set up figure and axes
@@ -353,10 +402,10 @@ ax.set_title("Heatmap of Correlation Between Attributes (Including Target)");
 ```
 
 
-![png](index_files/index_11_0.png)
+![png](index_files/index_14_0.png)
 
 
-Based on the plot above, which feature is most strongly correlated with the target (`listing_price`)? In other words, which feature has the strongest positive or negative correlation — the correlation with the greatest magnitude?
+Based on the heatmap, which feature is most strongly correlated with the target (`listing_price`)? In other words, which feature has the strongest positive or negative correlation — the correlation with the greatest magnitude?
 
 
 ```python
@@ -364,9 +413,7 @@ Based on the plot above, which feature is most strongly correlated with the targ
 most_correlated_feature = "piece_count"
 ```
 
-(Make sure you run the cell above before proceeding.)
-
-Let's create a scatter plot of that feature vs. listing price:
+Create a scatter plot of that feature vs. listing price:
 
 
 ```python
@@ -380,12 +427,12 @@ ax.set_title("Most Correlated Feature vs. Listing Price");
 ```
 
 
-![png](index_files/index_15_0.png)
+![png](index_files/index_18_0.png)
 
 
 Assuming you correctly identified `piece_count` (the number of pieces in the LEGO set) as the most correlated feature, you should have a scatter plot that shows a fairly clear linear relationship between that feature and the target. It looks like we are ready to proceed with making our baseline model without any additional transformation.
 
-### Building a Baseline Model
+## Building a Baseline Model
 
 Now, we'll build a linear regression model using just that feature, which will serve as our baseline model:
 
@@ -442,11 +489,18 @@ times
 """
 ```
 
-## 2. Build a Model with All Numeric Features
+
+
+
+    "\nBecause we are using the .score method of LinearRegression, these\nare r-squared scores. That means that each of them represents the\namount of variance of the target (listing price) that is explained\nby the model's features (currently just the number of pieces) and\nparameters (intercept value and coefficient values for the features)\n\nIn general this seems like a fairly strong model already. It is\ngetting nearly identical performance on training subsets compared to\nthe validation subsets, explaining around 80% of the variance both\ntimes\n"
+
+
+
+# 2. Build a Model with All Numeric Features
 
 Now that we have established a baseline, it's time to move on to more complex models.
 
-### Numeric Feature Selection
+## Numeric Feature Selection
 
 One thing that you will almost always need to do in a modeling process is remove non-numeric data prior to modeling. While you could apply more-advanced techniques such as one-hot encoding or NLP in order to convert non-numeric columns into numbers, this time just create a dataframe `X_train_numeric` that is a copy of `X_train` that only contains numeric columns.
 
@@ -638,10 +692,10 @@ for index, col in enumerate(scatterplot_data.columns):
 ```
 
 
-![png](index_files/index_28_0.png)
+![png](index_files/index_31_0.png)
 
 
-### Feature Selection Using Domain Understanding
+## Feature Selection Using Domain Understanding
 
 Ok, now all of the remaining features can technically go into a model with scikit-learn. But do they make sense?
 
@@ -670,6 +724,13 @@ not useful for this algorithm because we won't know the number of
 reviews or the star rating until after the LEGO set is released.
 """
 ```
+
+
+
+
+    "\nThe first issue aligns with the first feature we have, prod_id\n\nWhile it is possible that there is some useful information \nencoded in that number, it seems like it is not really a numeric\nfeature in the traditional sence\n\nThe scatter plot supports this idea, since it shows almost all\nprices being represented by a narrow range of ID values\n\nThe second issue aligns with num_reviews and star_rating. Although\nthese might be useful features in some modeling context, they are\nnot useful for this algorithm because we won't know the number of\nreviews or the star rating until after the LEGO set is released.\n"
+
+
 
 Now, create a variable `X_train_second_model`, which is a copy of `X_train_numeric` where those irrelevant columns have been removed:
 
@@ -793,7 +854,7 @@ X_train_second_model
 
 
 
-### Building and Evaluating the Second Model
+## Building and Evaluating the Second Model
 
 In the cell below, we use the same process to evaluate a model using `X_train_second_model` rather than using just `piece_count`.
 
@@ -821,7 +882,7 @@ print("Validation score:", baseline_scores["test_score"].mean())
 
     Current Model
     Train score:      0.7884552982196166
-    Validation score: 0.755820363666055
+    Validation score: 0.7558203636660551
     
     Baseline Model
     Train score:      0.7785726407224942
@@ -847,17 +908,24 @@ to understand the underlying patterns in the data
 """
 ```
 
-## 3. Select the Best Combination of Features
+
+
+
+    "\nOur second model got slightly better scores on the training\ndata, but worse scores on the validation data. This means that\nit is a worse model overall, since what we care about is the\nability to generate prices for future LEGO sets, not the\nability to fit well to the known LEGO sets' features\n\nIt seems like adding in these other features is actually just\ncausing overfitting, rather than improving the model's ability\nto understand the underlying patterns in the data\n"
+
+
+
+# 3. Select the Best Combination of Features
 
 As you likely noted above, adding all relevant numeric features did not actually improve the model performance. Instead, it led to overfitting.
 
-### Investigating Multicollinearity
+## Investigating Multicollinearity
 
 This potentially indicates that our model is performing poorly because these features violate the independence assumption (i.e. there is strong multicollinearity). In other words, maybe the minimum age, maximum age, and difficulty level are not really providing different information than the number of pieces in the LEGO set, and instead are just adding noise. Then the model is using that noise to get a slightly better score on the training data, but but a worse score on the validation data.
 
 While `LinearRegression` from scikit-learn has a lot of nice functionality for working with a predictive framing (e.g. compatibility with the `cross_validate` function), it doesn't have anything built in to detect strong multicollinearity. Fortunately the same linear regression model is also available from StatsModels ([documentation here](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html)), where it is called `OLS` (for "ordinary least squares"). Models in StatsModels, including `OLS`, are not really designed for predictive model validation, but they do give us a lot more statistical information.
 
-In the cell below, we use StatsModels to fit and evaluate a linear regression model on the same features used in the second model. Note that we will only see one r-squared value (not train and validation r-squared values) because it is using the full `X_train` dataset instead of using cross-validation.
+In the cell below, use StatsModels to fit a linear regression model on the same features used in the second model, then display the summary. 
 
 
 ```python
@@ -881,10 +949,10 @@ sm.OLS(y_train, sm.add_constant(X_train_second_model)).fit().summary()
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   506.8</td> 
 </tr>
 <tr>
-  <th>Date:</th>             <td>Wed, 24 Mar 2021</td> <th>  Prob (F-statistic):</th> <td>2.40e-183</td>
+  <th>Date:</th>             <td>Fri, 28 May 2021</td> <th>  Prob (F-statistic):</th> <td>2.40e-183</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>10:50:05</td>     <th>  Log-Likelihood:    </th> <td> -2741.4</td> 
+  <th>Time:</th>                 <td>17:13:18</td>     <th>  Log-Likelihood:    </th> <td> -2741.4</td> 
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>   558</td>      <th>  AIC:               </th> <td>   5493.</td> 
@@ -940,7 +1008,7 @@ A condition number of 10-30 indicates multicollinearity, and a condition number 
 
 In a predictive context (we are currently trying to build a model to assign prices to future LEGO sets, not a model primarily intended for understanding the relationship between prices and attributes of past LEGO sets), we do not *always* need to be worried when we identify strong multicollinearity. Sometimes there are features that are highly collinear but they also are individually communicating useful information to the model. In this case, however, it seems like strong multicollinearity might be what is causing our second model to have worse performance than the first model.
 
-### Selecting Features Based on p-values
+## Selecting Features Based on p-values
 
 Given that we suspect our model's issues are related to multicollinearity, let's try to narrow down those features. In this case, let's use the p-values assigned to the coefficients of the model.
 
@@ -953,7 +1021,14 @@ const (the intercept), piece_count, and max_age
 """
 ```
 
-**Important note:** There are many limitations to using coefficient p-values to select features. See [this StackExchange answer](https://stats.stackexchange.com/a/291239) with examples in R for more details. The suggested alternative in that answer, `glmnet`, is a form of *regularization*, which you will learn about later. Another related technique is *dimensionality reduction*, which will also be covered later. However for now you can proceed using just the p-values technique until the more-advanced techniques have been covered.
+
+
+
+    '\nconst (the intercept), piece_count, and max_age\n'
+
+
+
+**Important note:** There are many limitations to using coefficient p-values to select features. See [this StackExchange answer](https://stats.stackexchange.com/a/291239) with examples in R for more details. However for now you can proceed using just the p-values technique until the more-advanced techniques have been covered.
 
 In the cell below, create a list `significant_features` that contains the names of the columns whose features have statistically significant coefficient p-values. You should not include `"const"` in that list because `LinearRegression` from scikit-learn automatically adds a constant term and there is no column of `X_train` called `"const"`.
 
@@ -994,11 +1069,11 @@ print("Validation score:", baseline_scores["test_score"].mean())
 
     Current Model
     Train score:      0.7788368375081581
-    Validation score: 0.7809488632030983
+    Validation score: 0.7809488632030984
     
     Second Model
     Train score:      0.7884552982196166
-    Validation score: 0.755820363666055
+    Validation score: 0.7558203636660551
     
     Baseline Model
     Train score:      0.7785726407224942
@@ -1015,48 +1090,20 @@ although the scores are very similar to the baseline
 """
 ```
 
-### Selecting Features with `sklearn.feature_selection`
-
-Let's try a different approach. Scikit-learn has a submodule called `feature_selection` that includes tools to help reduce the feature set.
-
-We'll use `RFECV` ([documentation here](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html#sklearn.feature_selection.RFECV)). "RFE" stands for "recursive feature elimination", meaning that it repeatedly scores the model, finds and removes the feature with the lowest "importance", then scores the model again. If the new score is better than the previous score, it continues removing features until the minimum is reached. "CV" stands for "cross validation" here, and we can use the same splitter we have been using to test our data so far.
 
 
-```python
 
-from sklearn.feature_selection import RFECV
-from sklearn.preprocessing import StandardScaler
+    '\nRemoving those features led to the best model so far,\nalthough the scores are very similar to the baseline\n'
 
-# Importances are based on coefficient magnitude, so
-# we need to scale the data to normalize the coefficients
-X_train_for_RFECV = StandardScaler().fit_transform(X_train_second_model)
-
-model_for_RFECV = LinearRegression()
-
-# Instantiate and fit the selector
-selector = RFECV(model_for_RFECV, cv=splitter)
-selector.fit(X_train_for_RFECV, y_train)
-
-# Print the results
-print("Was the column selected?")
-for index, col in enumerate(X_train_second_model.columns):
-    print(f"{col}: {selector.support_[index]}")
-```
-
-    Was the column selected?
-    piece_count: True
-    min_age: False
-    max_age: False
-    difficulty_level: False
 
 
 Interesting. So, this algorithm is saying that our baseline model, with `piece_count` as the only feature, is the best one it could find.
 
 However, note that this is based on the "importances" of the features, which means the coefficients in the context of a linear regression. It is possible that we can still get a better model by including multiple features, if we try removing columns using a different strategy.
 
-### A Brute Force Approach
+## A Brute Force Approach
 
-Given that we have only four columns and only a few hundred rows, one other option we have is something more computationally expensive: write custom code that goes over multiple different permutations of the columns, to see if we can find something better than the p-values approach or the `RFECV` approach.
+Given that we have only four columns and only a few hundred rows, one other option we have is something more computationally expensive: write custom code that goes over multiple different permutations of the columns, to see if we can find something better than the p-values approach.
 
 The code below assumes that we want to keep the `piece_count` column, then attempts a linear regression with all possible combinations of 1-2 additional features. Don't worry too much if you don't understand everything that is happening here — an approach like this should be a last resort and you may not ever need to use it!
 
@@ -1259,7 +1306,14 @@ are included.
 """
 ```
 
-## 4. Build and Evaluate a Final Predictive Model
+
+
+
+    "\nThe best model uses piece_count, max_age, and difficulty_level\nIt has a validation score of 0.781578\n\nThe worst model uses piece_count, min_age, and max_age\nIt has a validation score of 0.751768\n\nThis makes sense if we think that min_age and max_age are\nmostly providing the same information, and that the difference\nis mainly noise (leading to overfitting), that the best model\nwould only have one of them\n\nOverall, feature selection does not seem to matter very much\nfor this dataset + linear regression. So long as we use our\nmost correlated feature (piece_count), the validation score\ndoesn't change very much, regardless of which other features\nare included.\n"
+
+
+
+# 4. Build and Evaluate a Final Predictive Model
 
 In the cell below, create a list `best_features` which contains the names of the best model features based on the findings of the previous step:
 
@@ -1298,21 +1352,21 @@ final_model.score(X_test_final, y_test)
 
 
 
-### User-Friendly Metrics
+## User-Friendly Metrics
 
-The score above is an r-squared score. Let's compute the RMSE as well, since this would be more applicable to a business audience.
+The score above is an r-squared score. Let's compute the MAE as well, since this would be more applicable to a business audience.
 
 
 ```python
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
 
-mean_squared_error(y_test, final_model.predict(X_test_final), squared=False)
+mean_absolute_error(y_test, final_model.predict(X_test_final))
 ```
 
 
 
 
-    47.403687974333
+    14.90432119788402
 
 
 
@@ -1322,16 +1376,23 @@ What does this value mean in the current business context?
 ```python
 """
 This means that for an average LEGO set, this algorithm will
-be off by about $47. Given that most LEGO sets sell for less
-than $100, we would definitely want to have a human double-check
+be off by about $15. Given that most LEGO sets sell for less
+than $50, we would probably want to have a human double-check
 and adjust these prices rather than just allowing the algorithm
 to set them
 """
 ```
 
-## 5. Interpret the Final Model
 
-Below, we display the coefficients and intercept for the final model:
+
+
+    '\nThis means that for an average LEGO set, this algorithm will\nbe off by about $15. Given that most LEGO sets sell for less\nthan $50, we would probably want to have a human double-check\nand adjust these prices rather than just allowing the algorithm\nto set them\n'
+
+
+
+# 5. Interpret the Final Model
+
+Display the coefficients and intercept for the final model:
 
 
 ```python
@@ -1345,7 +1406,7 @@ print("Intercept:", final_model.intercept_)
     difficulty_level    2.044057
     Name: Coefficients, dtype: float64
     
-    Intercept: 9.680845111984276
+    Intercept: 9.680845111984254
 
 
 Interpret these values below. What is the pricing algorithm you have developed?
@@ -1362,9 +1423,16 @@ of 1 in the difficulty level, the price goes up by about $2.04.
 """
 ```
 
+
+
+
+    '\nAccording to our model, the base price for a LEGO set (the\nmodel intercept) is about $9.68. Then for each additional\nLEGO piece in the set, the price goes up by $0.09 per piece.\nFor every year higher that the maximum age is, the price\ngoes down by about $0.04. Then finally for every increase\nof 1 in the difficulty level, the price goes up by about $2.04.\n'
+
+
+
 Before assuming that these coefficients give us inferential insight into past pricing decisions, we should investigate each of the assumptions of linear regression, in order to understand how much our model violates them.
 
-### Investigating Linearity
+## Investigating Linearity
 
 First, let's check whether the linearity assumption holds.
 
@@ -1382,7 +1450,7 @@ ax.legend();
 ```
 
 
-![png](index_files/index_72_0.png)
+![png](index_files/index_73_0.png)
 
 
 Are we violating the linearity assumption?
@@ -1397,6 +1465,13 @@ assumption)
 """
 ```
 
+
+
+
+    '\nWe have some outliers that are all over the\nplace, but in general it looks like we have\na linear relationship (not violating this\nassumption)\n'
+
+
+
 ### Investigating Normality
 
 Now let's check whether the normality assumption holds for our model.
@@ -1409,7 +1484,7 @@ sm.graphics.qqplot(residuals, dist=stats.norm, line='45', fit=True);
 ```
 
 
-![png](index_files/index_76_0.png)
+![png](index_files/index_77_0.png)
 
 
 Are we violating the normality assumption?
@@ -1422,6 +1497,13 @@ is bad enough that we can probably say that we
 are violating the normality assumption
 """
 ```
+
+
+
+
+    '\nOur outliers are again causing problems. This\nis bad enough that we can probably say that we\nare violating the normality assumption\n'
+
+
 
 ### Investigating Multicollinearity (Independence Assumption)
 
@@ -1456,6 +1538,13 @@ so we don't have too high of multicollinearity
 """
 ```
 
+
+
+
+    "\nWe are below 5 for all features in the final model,\nso we don't have too high of multicollinearity\n"
+
+
+
 ### Investigating Homoscedasticity
 
 Now let's check whether the model's errors are indeed homoscedastic or if they violate this principle and display heteroscedasticity.
@@ -1471,7 +1560,7 @@ ax.set_ylabel("Actual - Predicted Value");
 ```
 
 
-![png](index_files/index_84_0.png)
+![png](index_files/index_85_0.png)
 
 
 Are we violating the homoscedasticity assumption?
@@ -1485,6 +1574,13 @@ the predicted price. We are probably violating
 a strict definition of homoscedasticity.
 """
 ```
+
+
+
+
+    '\nThis is not the worst "funnel" shape, although\nthe residuals do seem to differ some based on\nthe predicted price. We are probably violating\na strict definition of homoscedasticity.\n'
+
+
 
 ### Linear Regression Assumptions Conclusion
 
@@ -1504,6 +1600,33 @@ we could extract from the text features that are currently not part
 of the model
 """
 ```
+
+
+
+
+    '\nOur confidence in these coefficients should not be too high, since\nwe are violating or close to violating more than one of the\nassumptions of linear regression. This really only should be used\nfor predictive purposes.\n\nA good next step here would be to start trying to figure out why\nour outliers behave the way they do. Maybe there is some information\nwe could extract from the text features that are currently not part\nof the model\n'
+
+
+
+# 6. Create Presentation Notebook
+
+Now that you've completed your project, let's put it into an easily presentable format so you can add it to your portfolio. To do this, we recommend completing the following steps outside of this notebook.
+
+1. Create a new GitHub repository for your project.
+2. Save a copy of this notebook and the `data` subfolder into your local repository.
+3. Edit the text and images in the notebook to present your project and help someone else understand it.
+4. Run your notebook from start to finish, then save it.
+5. Create a README.md file in your repository with a brief summary of your project.
+6. Push your updated repository to GitHub to share with your instructor and employers!
+
+# Level Up: Project Enhancements
+
+After completing the project, you could consider the following enhancements if you have time:
+
+* Engineer new features to improve the predictive power of your model
+* Identify and remove outliers, then redo the analysis
+* Identify models with high or low value for LEGO buyers, using the differences between actual and predicted prices
+* Conduct statistical tests using the numeric features in the dataset to make inferences about the population of LEGO sets
 
 ## Summary
 
