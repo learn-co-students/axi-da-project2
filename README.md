@@ -90,18 +90,6 @@ sql_query = """
 df = pd.read_sql(sql_query, connection)
 ```
 
-### Todo:
-
-
-- ~Add duplicates~
-- ~Add null values~
-    - ~In the target column~
-    
-- Outliers.
-- ~Change formatting of column names~
-- ~Make target column a string by adding a '$'~
-- Branch: da-linear-regression
-
 ## Analysis Requirements
 
 ### 1. Data Exploration and Cleaning
