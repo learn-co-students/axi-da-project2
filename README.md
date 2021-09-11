@@ -46,7 +46,6 @@ To load in the data, you will need to complete the following tasks:
 
 
 ```python
-# Run this cell without changes
 import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -55,27 +54,6 @@ import matplotlib.pyplot as plt
 
 
 ```python
-# __SOLUTION__
-import sqlite3
-import pandas as pd
-import matplotlib.pyplot as plt
-%matplotlib inline
-```
-
-
-```python
-# Replace None with your code
-
-connection = None
-
-sql_query = None
-
-df = None
-```
-
-
-```python
-# __SOLUTION__
 
 connection = sqlite3.connect('data/legos.db')
 
@@ -123,14 +101,6 @@ Inspect the dataframe by outputting the first five rows.
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-# __SOLUTION__
 
 df.head()
 ```
@@ -253,14 +223,6 @@ Produce high-level descriptive information about your training data
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-# __SOLUTION__
 
 df.describe()
 ```
@@ -386,14 +348,6 @@ Display the number of null values for each column
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-#__SOLUTION__
 df.isna().sum()
 ```
 
@@ -421,14 +375,6 @@ In the cell below, drop all rows where `List Price` is null.
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-#__SOLUTION__
 df = df.dropna(subset=['List Price'])
 ```
 
@@ -436,37 +382,16 @@ To make things easier moving forward, in the cell below, reformat the column nam
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-#__SOLUTION__
 df.columns = df.columns.str.loyour().str.replace(' ', '_')
 ```
 
 Run the cell below to check your reformatting. If it runs without throwing an error it means you have reformatted the columns correctly.
-
-
-```python
-assert 'min_age' in df.columns
-```
 
 Check the datatypes of the columns in the dataframe. 
 > Remember, the target column and any columns you use as independent variables *must* have a numeric datatype. After inspecting the datatypes of the columns, convert columns to numeric where necessary. 
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-#__SOLUTION__
 print(df.dtypes)
 
 df.list_price = df.list_price.str.replace('$', '').astype(float)
@@ -494,14 +419,6 @@ In the cell below, output the number of duplicate rows in the dataframe. If dupl
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-#__SOLUTION__
 print('Duplicated rows:', df.duplicated().sum())
 
 df = df.drop_duplicates()
@@ -514,14 +431,6 @@ Visualize the distribution of the dependent variable
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-# __SOLUTION__
 
 fig, ax = plt.subplots(figsize=(10, 5))
 
@@ -533,7 +442,7 @@ ax.set_title("Distribution of LEGO Set Prices");
 ```
 
 
-![png](index_files/output_34_0.png)
+![png](index_files/output_23_0.png)
 
 
 # Create a Baseline Model
@@ -548,17 +457,6 @@ To do this you must:
 
 
 ```python
-# Calculate the mean of the list_price column in the train dataframe.
-mean = None
-
-# Create a list with the same length as the list_price column 
-# where every value in the list is the calculated mean.
-baseline_preds = None
-```
-
-
-```python
-#__SOLUTION__
 from sklearn.metrics import r2_score, mean_squared_error
 
 # Calculate the mean of the list_price column in the train dataframe.
@@ -584,31 +482,11 @@ print('Baseline RMSE:', baseline_rmse)
 
 Now that you have baseline predictions, you can use the predictions to calculate metrics about the model's performance. 
 
-
-```python
-from sklearn.metrics import r2_score, mean_squared_error
-
-# Pass the list_price column and the baseline_preds list into the function r2_score
-baseline_r2 = r2_score(train.list_price, baseline_preds)
-
-# Pass the list_price column and the baseline_preds list 
-# into the function mean_squared_error and setting squared to False
-baseline_rmse = mean_squared_error(train.list_price, baseline_preds, squared=False)
-
-print('Baseline R^2: ', baseline_r2)
-print('Baseline RMSE:', baseline_rmse)
-```
-
-    Baseline R^2:  0.0
-    Baseline RMSE: 70.31606908300459
-
-
 **Interpret the resulting metrics for the baseline model.**
 
 - How is the model explaining the variance of the dependent variable?
 - On average, how many dollars off are the models predictions?
 
-==SOLUTION==
 
 The baseline model is doing a poor job at explaining the variance of the dependent variable. An $R^2$ of `0.0` can be interpreted as "The model is explaining 0% of the variance in the dependent variable."
 
@@ -624,7 +502,6 @@ The most important column or row shows the correlations betyouen the target (lis
 
 
 ```python
-# Run this cell without changes
 
 import seaborn as sns
 import numpy as np
@@ -632,22 +509,6 @@ import numpy as np
 
 
 ```python
-# __SOLUTION__
-
-import seaborn as sns
-import numpy as np
-```
-
-
-```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-# __SOLUTION__
 
 # Create a df with the target as the first column,
 # then compute the correlation matrix
@@ -678,21 +539,13 @@ ax.set_title("Heatmap of Correlation Between Attributes (Including Target)");
 ```
 
 
-![png](index_files/output_46_0.png)
+![png](index_files/output_31_0.png)
 
 
 Based on the heatmap, which feature is most strongly correlated with the target (`list_price`)? In other words, which feature has the strongest positive or negative correlation — the correlation with the greatest magnitude?
 
 
 ```python
-# Replace None with the name of the feature (a string)
-
-most_correlated_feature = None
-```
-
-
-```python
-# __SOLUTION__
 
 most_correlated_feature = "piece_count"
 ```
@@ -701,14 +554,6 @@ Create a scatter plot of that feature vs. listing price:
 
 
 ```python
-# Replace None with your code
-
-None
-```
-
-
-```python
-# __SOLUTION__
 
 fig, ax = plt.subplots()
 
@@ -719,7 +564,7 @@ ax.set_title("Most Correlated Feature vs. Listing Price");
 ```
 
 
-![png](index_files/output_52_0.png)
+![png](index_files/output_35_0.png)
 
 
 Assuming you correctly identified `piece_count` (the number of pieces in the LEGO set) as the most correlated feature, you should have a scatter plot that shows a fairly clear linear relationship betyouen that feature and the target. It looks like you are ready to proceed with creating a simple linear regression model.
@@ -732,16 +577,6 @@ In the cell below, fit a statsmodels linear regression model to the data and out
 
 
 ```python
-import statsmodels.formula.api as smf
-
-# Replace None with your code
-
-model = None
-```
-
-
-```python
-# __SOLUTION__
 
 import statsmodels.formula.api as smf
 
@@ -820,7 +655,6 @@ Specifically:
 - What are the confidence intervals for the coefficients?
 - Do the relationships found by the model seem plausible? 
 
-==SOLUTION==
 
 This model suggests that on average, the price of a lego set increases betyouen 0.081 and 0.089 US dollars when the piece count of the lego set is increased by 1. This model finds that when there are 0 pieces, the average price of a lego set is betyouen \\$8.955 and \\$15.640. Given that a lego set must have pieces, this intercept is not very useful. The coefficients for the intercept and the piece count variable are both statistically significant (p<0.05).
 
@@ -832,28 +666,6 @@ Now that the model parameters have been interpreted, the model must be assessed 
 
 
 ```python
-# Replace None with your code
-model_r2 = None
-
-model_rmse = None
-
-print('Baseline R^2: ', baseline_r2)
-print('Baseline RMSE:', baseline_rmse)
-print('----------------------------')
-print('Regression R^2: ', model_r2)
-print('Regression RMSE:', model_rmse)
-```
-
-    Baseline R^2:  0.0
-    Baseline RMSE: 70.31606908300459
-    ----------------------------
-    Regression R^2:  None
-    Regression RMSE: None
-
-
-
-```python
-#__SOLUTION__
 model_r2 = r2_score(df.list_price, model.predict())
 
 model_rmse = mean_squared_error(df.list_price, model.predict(), squared=False)
@@ -874,7 +686,6 @@ print('Regression RMSE:', model_rmse)
 
 ### Interpret the model metrics
 
-==SOLUTION==
 
 **$R^2$**:
 
@@ -894,8 +705,6 @@ First, let's check whether the linearity assumption holds.
 
 
 ```python
-# Run this cell without changes
-
 preds = model.predict()
 fig, ax = plt.subplots()
 
@@ -908,30 +717,11 @@ ax.legend();
 ```
 
 
-![png](index_files/output_69_0.png)
-
-
-
-```python
-# __SOLUTION__
-preds = model.predict()
-fig, ax = plt.subplots()
-
-perfect_line = np.arange(df.list_price.min(), df.list_price.max())
-ax.plot(perfect_line, linestyle="--", color="orange", label="Perfect Fit")
-ax.scatter(df.list_price, preds, alpha=0.5)
-ax.set_xlabel("Actual Price")
-ax.set_ylabel("Predicted Price")
-ax.legend();
-```
-
-
-![png](index_files/output_70_0.png)
+![png](index_files/output_50_0.png)
 
 
 Are you violating the linearity assumption?
 
-==SOLUTION==
 
 We have a few outliers that are deviating from the assumption, but in general it looks like you have a linear relationship (not violating this
 assumption)
@@ -942,33 +732,17 @@ Now let's check whether the normality assumption holds for our model.
 
 
 ```python
-# Run this code without changes
-import scipy.stats as stats
-import statsmodels.api as sm
-
-residuals = (df.list_price - preds)
-sm.graphics.qqplot(residuals, dist=stats.norm, line='45', fit=True);
-```
-
-
-![png](index_files/output_74_0.png)
-
-
-
-```python
-# __SOLUTION__
 import scipy.stats as stats
 residuals = (df.list_price - preds)
 sm.graphics.qqplot(residuals, dist=stats.norm, line='45', fit=True);
 ```
 
 
-![png](index_files/output_75_0.png)
+![png](index_files/output_54_0.png)
 
 
 Are you violating the normality assumption?
 
-==SOLUTION==
 
 Our outliers are again causing problems. This
 is bad enough that you can probably say that you
@@ -980,7 +754,6 @@ Now let's check whether the model's errors are indeed homoscedastic or if they v
 
 
 ```python
-# Run this cell without changes
 fig, ax = plt.subplots()
 
 ax.scatter(preds, residuals, alpha=0.5)
@@ -990,27 +763,11 @@ ax.set_ylabel("Actual - Predicted Value");
 ```
 
 
-![png](index_files/output_79_0.png)
-
-
-
-```python
-# __SOLUTION__ 
-fig, ax = plt.subplots()
-
-ax.scatter(preds, residuals, alpha=0.5)
-ax.plot(preds, [0 for i in range(len(df))])
-ax.set_xlabel("Predicted Value")
-ax.set_ylabel("Actual - Predicted Value");
-```
-
-
-![png](index_files/output_80_0.png)
+![png](index_files/output_58_0.png)
 
 
 Are you violating the homoscedasticity assumption?
 
-==SOLUTION==
 
 This is not the worst "funnel" shape, although
 the residuals do seem to differ some based on
@@ -1021,7 +778,6 @@ a strict definition of homoscedasticity.
 
 Given your ansyours above, how should you interpret our model's coefficients? Do you have a model that can be used for inferential as youll as predictive purposes? What might your next steps be?
 
-==SOLUTION==
 
 Our confidence in the piece count coefficient should not be too high, since
 you are violating or close to violating more than one of the
