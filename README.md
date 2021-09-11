@@ -11,7 +11,7 @@ You will be able to:
 * Write an SQL query to pull data from an SQL database
 * Perform a simple linear regression analysis 
 * Evaluate your model and interpret its predictive performance metrics
-* Apply an inferential lens to interpret relationships between variables identified by the model
+* Apply an inferential lens to interpret relationships betyouen variables identified by the model
 
 # Task: Develop a LEGO Pricing Algorithm
 
@@ -23,11 +23,11 @@ Photo by <a href="https://unsplash.com/@xavi_cabrera?utm_source=unsplash&utm_med
 
 You just got hired by LEGO! Your first project is going to be to develop a pricing algorithm in order to analyze the value of individual lego pieces.
 
-The primary purpose of this algorithm is *inferential*, meaning that **your model should be able to tell us something about the relationship between the attributes of a LEGO set and its price**. You will apply your knowledge of statistics to include appropriate caveats about these relationships.
+The primary purpose of this algorithm is *inferential*, meaning that **your model should be able to tell us something about the relationship betyouen the attributes of a LEGO set and its price**. You will apply your knowledge of statistics to include appropriate caveats about these relationships.
 
 ## Data Understanding
 
-You have been given access to an sql database containing over 700 LEGO sets released in the past, including attributes of those sets as well as their prices.
+You have been given access to an sql database containing over 700 LEGO sets released in the past, including attributes of those sets as youll as their prices.
 
 You do not need to worry about inflation or differences in currency; just predict the same kinds of prices as are present in the past data, which have already been converted to USD.
 
@@ -39,7 +39,7 @@ To load in the data, you will need to complete the following tasks:
 - Open up a connection to the legos database
 - Write an sql query to join all three tables together
 - Run the sql query and load the joined tables into a pandas dataframe
-    - The easiest method for completing this task is to use the `pd.read_sql` method ([Documentation](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html))
+    - The easiest method for completing this task is to use the `pd.read_sql` function ([Documentation](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html))
     - Store the pandas dataframe in a variable called `df`
 
 ![Entity Relational Diagram](index_files/images/erd.png)
@@ -98,11 +98,11 @@ During the data exploration phase, the datatypes of columns should be checked, t
 
 ### 2. Create a Baseline Model
 
-In order to evaluate how well a simple linear regression model is understanding the dependent variable, we will begin by first creating a model that predicts the mean of the dependent variable for every observation. Predicting the mean of `list_price` can be considered a highly naive model. If our simple linear regression model performs worse than this naive approach, we can safetly say that it is not a very good model. 
+In order to evaluate how youll a simple linear regression model is understanding the dependent variable, you will begin by first creating a model that predicts the mean of the dependent variable for every observation. Predicting the mean of `list_price` can be considered a highly naive model. If our simple linear regression model performs worse than this naive approach, you can safely say that it is not a very good model. 
 
 ### 3. Interpret a Correlation Heatmap
 
-To develop a simple linear regression model, we will identify the independent variable that is most correlated with our dependent variable. To do this this we will plot a correlation heatmap to identify the variable most correlated with `list_price`.
+To develop a simple linear regression model, you will identify the independent variable that is most correlated with our dependent variable. To do this this you will plot a correlation heatmap to identify the variable most correlated with `list_price`.
 
 ### 4. Build a Simple Linear Regression Model
 
@@ -110,11 +110,11 @@ Now, create a linear regression model using the `statsmodels` library where the 
 
 ### 5. Interpret the Simple Linear Regression Model
 
-Once the model has been fit, the coefficient for our independent variable, its p-value, and the coefficient confidence interval should be interpeted. We should ask ourselves whether or not the relationship our model is finding seems plausible. 
+Once the model has been fit, the coefficient for our independent variable, its p-value, and the coefficient confidence interval should be interpeted. You should ask ourselves whether or not the relationship your model is finding seems plausible. 
 
 ### 6. Evaluate the Simple Linear Regression Model
 
-Before we can make a final assessment of our model, we need to compare its metrics with the baseline model created in step one, and we need to check the assumptions of linear regression.
+Before you can make a final assessment of our model, you need to compare its metrics with the baseline model created in step one, and you need to check the assumptions of linear regression.
 
 
 # 1. Data Exploration and Cleaning
@@ -415,7 +415,7 @@ df.isna().sum()
 
 
 
-We have four columns that contain null values. Of those four, `List Price`, which is our dependent variable, is probably the most concerning. 
+You have four columns that contain null values. Of those four, `List Price`, which is your dependent variable, is probably the most concerning. 
 
 In the cell below, drop all rows where `List Price` is null.
 
@@ -432,7 +432,7 @@ None
 df = df.dropna(subset=['List Price'])
 ```
 
-To make things easier moving forward, in the cell below, reformat the column names so spaces have been replaced with underscores and the text has been lowered.
+To make things easier moving forward, in the cell below, reformat the column names so spaces have been replaced with underscores and the text has been lowered
 
 
 ```python
@@ -444,7 +444,7 @@ None
 
 ```python
 #__SOLUTION__
-df.columns = df.columns.str.lower().str.replace(' ', '_')
+df.columns = df.columns.str.loyour().str.replace(' ', '_')
 ```
 
 Run the cell below to check your reformatting. If it runs without throwing an error it means you have reformatted the columns correctly.
@@ -455,7 +455,7 @@ assert 'min_age' in df.columns
 ```
 
 Check the datatypes of the columns in the dataframe. 
-> Remember, the target column and any columns we use as independent variables *must* have a numeric datatype. After inspecting the datatypes of the columns, convert columns to numeric where necessary. 
+> Remember, the target column and any columns you use as independent variables *must* have a numeric datatype. After inspecting the datatypes of the columns, convert columns to numeric where necessary. 
 
 
 ```python
@@ -538,10 +538,12 @@ ax.set_title("Distribution of LEGO Set Prices");
 
 # Create a Baseline Model
 
-Below, we create a baseline model. To do this we must:
+Below, create a baseline model. 
+
+To do this you must:
 
 1. Calculate the mean of the `list_price` column in the `train` dataframe.
-2. Create a list with the same length as the `list_price` column where every value in the list is the mean that was calculated in the previous task. 
+2. Now that you've calculate the mean of `list_price`, create a list with the same length as the `list_price` column where every value in the list is the calculated mean.
     - Store this list in the variable `baseline_preds`.
 
 
@@ -549,7 +551,8 @@ Below, we create a baseline model. To do this we must:
 # Calculate the mean of the list_price column in the train dataframe.
 mean = None
 
-# Create a list with the same length as the list_price column where every value in the list is the mean
+# Create a list with the same length as the list_price column 
+# where every value in the list is the calculated mean.
 baseline_preds = None
 ```
 
@@ -579,7 +582,7 @@ print('Baseline RMSE:', baseline_rmse)
     Baseline RMSE: 70.31606908300459
 
 
-Now that we have baseline predictions, we can use the predictions to calculate metrics about the model's performance. 
+Now that you have baseline predictions, you can use the predictions to calculate metrics about the model's performance. 
 
 
 ```python
@@ -602,7 +605,7 @@ print('Baseline RMSE:', baseline_rmse)
 
 **Interpret the resulting metrics for the baseline model.**
 
-- How well is the model explaining the variance of the dependent variable?
+- How is the model explaining the variance of the dependent variable?
 - On average, how many dollars off are the models predictions?
 
 ==SOLUTION==
@@ -615,9 +618,9 @@ The baseline model's predictions, on average, are mispredicted by about \$70.
 
 ## Correlation Heatmap
 
-Produce a heatmap showing the correlations between all of the numeric values in our training data. The x and y axis labels should indicate the pair of values that are being compared, and then the color and the number should represent the correlation. 
+Produce a heatmap showing the correlations between all of the numeric values in the data. The x and y axis labels should indicate the pair of values that are being compared, and then the color and the number should represent the correlation. 
 
-The most important column or row shows the correlations between the target (listing price) and other attributes.
+The most important column or row shows the correlations betyouen the target (listing price) and other attributes.
 
 
 ```python
@@ -659,12 +662,12 @@ fig, ax = plt.subplots(figsize=(5, 8))
 sns.heatmap(
     # Specifies the data to be plotted
     data=corr,
-    # The mask means we only show half the values,
+    # The mask means you only show half the values,
     # instead of showing duplicates. It's optional.
     mask=np.triu(np.ones_like(corr, dtype=bool)),
-    # Specifies that we should use the existing axes
+    # Specifies that you should use the existing axes
     ax=ax,
-    # Specifies that we want labels, not just colors
+    # Specifies that you want labels, not just colors
     annot=True,
     # Customizes colorbar appearance
     cbar_kws={"label": "Correlation", "orientation": "horizontal", "pad": .2, "extend": "both"}
@@ -719,11 +722,11 @@ ax.set_title("Most Correlated Feature vs. Listing Price");
 ![png](index_files/output_52_0.png)
 
 
-Assuming you correctly identified `piece_count` (the number of pieces in the LEGO set) as the most correlated feature, you should have a scatter plot that shows a fairly clear linear relationship between that feature and the target. It looks like we are ready to proceed with making our baseline model without any additional transformation.
+Assuming you correctly identified `piece_count` (the number of pieces in the LEGO set) as the most correlated feature, you should have a scatter plot that shows a fairly clear linear relationship betyouen that feature and the target. It looks like you are ready to proceed with creating a simple linear regression model.
 
 # 3. Build a Simple Linear Regression Model
 
-Now, we'll build a linear regression model using just that feature. 
+Now, you'll build a linear regression model using just that feature. 
 
 In the cell below, fit a statsmodels linear regression model to the data and output a summary for the model. 
 
@@ -809,15 +812,21 @@ model.summary()
 
 # 4. Interpret the Simple Linear Regression Model
 
-Once the model has been fit, the coefficient for the intercept, the independent variable, p-values, and the coefficient confidence intervals should be interpeted. We should ask ourselves whether or not the relationship our model is finding seems plausible.
+Now that the model has been fit, you should interpret the model parameters. 
+
+Specifically:
+- What do the coefficients for the intercept and independent variable suggest about the dependent variable?
+- Are the coefficients found to be statistically significant?
+- What are the confidence intervals for the coefficients?
+- Do the relationships found by the model seem plausible? 
 
 ==SOLUTION==
 
-This model suggests that on average, the price of a lego set increases between 0.081 and 0.089 US dollars when the piece count of the lego set is increased by 1. This model finds that when there are 0 pieces, the average price of a lego set is between \\$8.955 and \\$15.640. Given that a lego set must have pieces, this intercept is not very useful. The coefficients for the intercept and the piece count variable are both statistically significant (p<0.05).
+This model suggests that on average, the price of a lego set increases betyouen 0.081 and 0.089 US dollars when the piece count of the lego set is increased by 1. This model finds that when there are 0 pieces, the average price of a lego set is betyouen \\$8.955 and \\$15.640. Given that a lego set must have pieces, this intercept is not very useful. The coefficients for the intercept and the piece count variable are both statistically significant (p<0.05).
 
 # 5. Evaluate the Simple Linear Regression Model
 
-Before we can make a final assessment of our model, we need to compare its metrics with the baseline model created in step one, and we need to check the assumptions of linear regression.
+Now that the model parameters have been interpreted, the model must be assessed based on predictive metrics and whether or not the model is meeting the assumptions of linear regression. 
 
 ### Compare the $R^2$ and the Root Mean Squared Error of the simple linear regression model with the baseline model. 
 
@@ -920,33 +929,12 @@ ax.legend();
 ![png](index_files/output_70_0.png)
 
 
-Are we violating the linearity assumption?
+Are you violating the linearity assumption?
 
+==SOLUTION==
 
-```python
-# Replace None with appropriate text
-"""
-None
-"""
-```
-
-
-```python
-# __SOLUTION__
-"""
-We have some outliers that are all over the
-place, but in general it looks like we have
-a linear relationship (not violating this
+We have a few outliers that are deviating from the assumption, but in general it looks like you have a linear relationship (not violating this
 assumption)
-"""
-```
-
-
-
-
-    '\nWe have some outliers that are all over the\nplace, but in general it looks like we have\na linear relationship (not violating this\nassumption)\n'
-
-
 
 #### Investigating Normality
 
@@ -963,7 +951,7 @@ sm.graphics.qqplot(residuals, dist=stats.norm, line='45', fit=True);
 ```
 
 
-![png](index_files/output_75_0.png)
+![png](index_files/output_74_0.png)
 
 
 
@@ -975,35 +963,16 @@ sm.graphics.qqplot(residuals, dist=stats.norm, line='45', fit=True);
 ```
 
 
-![png](index_files/output_76_0.png)
+![png](index_files/output_75_0.png)
 
 
-Are we violating the normality assumption?
+Are you violating the normality assumption?
 
+==SOLUTION==
 
-```python
-# Replace None with appropriate text
-"""
-None
-"""
-```
-
-
-```python
-# __SOLUTION__
-"""
 Our outliers are again causing problems. This
-is bad enough that we can probably say that we
+is bad enough that you can probably say that you
 are violating the normality assumption
-"""
-```
-
-
-
-
-    '\nOur outliers are again causing problems. This\nis bad enough that we can probably say that we\nare violating the normality assumption\n'
-
-
 
 #### Investigating Homoscedasticity
 
@@ -1021,7 +990,7 @@ ax.set_ylabel("Actual - Predicted Value");
 ```
 
 
-![png](index_files/output_81_0.png)
+![png](index_files/output_79_0.png)
 
 
 
@@ -1036,78 +1005,41 @@ ax.set_ylabel("Actual - Predicted Value");
 ```
 
 
-![png](index_files/output_82_0.png)
+![png](index_files/output_80_0.png)
 
 
-Are we violating the homoscedasticity assumption?
+Are you violating the homoscedasticity assumption?
 
+==SOLUTION==
 
-```python
-# Replace None with appropriate text
-"""
-None
-"""
-```
-
-
-```python
-# __SOLUTION__
-"""
 This is not the worst "funnel" shape, although
 the residuals do seem to differ some based on
 the predicted price. We are probably violating
 a strict definition of homoscedasticity.
-"""
-```
-
-
-
-
-    '\nThis is not the worst "funnel" shape, although\nthe residuals do seem to differ some based on\nthe predicted price. We are probably violating\na strict definition of homoscedasticity.\n'
-
-
 
 ### Linear Regression Assumptions Conclusion
 
-Given your answers above, how should we interpret our model's coefficients? Do we have a model that can be used for inferential as well as predictive purposes? What might your next steps be?
+Given your ansyours above, how should you interpret our model's coefficients? Do you have a model that can be used for inferential as youll as predictive purposes? What might your next steps be?
 
+==SOLUTION==
 
-```python
-# Replace None with appropriate text
-"""
-None
-"""
-```
-
-
-```python
-# __SOLUTION__
-"""
 Our confidence in the piece count coefficient should not be too high, since
-we are violating or close to violating more than one of the
+you are violating or close to violating more than one of the
 assumptions of linear regression. This really only should be used
 for predictive purposes.
 
 A good next step here would be to start trying to figure out why
 our outliers behave the way they do. Additionally, adding other variables
 to the model (Moving beyond simple linear regression) may help meet the assumptions.
-"""
-```
-
-
-
-
-    '\nOur confidence in the piece count coefficient should not be too high, since\nwe are violating or close to violating more than one of the\nassumptions of linear regression. This really only should be used\nfor predictive purposes.\n\nA good next step here would be to start trying to figure out why\nour outliers behave the way they do. Additionally, adding other variables\nto the model (Moving beyond simple linear regression) may help meet the assumptions.\n'
-
-
 
 # Level Up: Project Enhancements
 
 After completing the project, you could consider the following enhancements if you have time:
 
-* Compile the data cleaning code into a function
 * Identify and remove outliers, then redo the analysis
-* Identify models with high or low value for LEGO buyers, using the differences between actual and predicted prices
+* Compile the data cleaning code into a function
+* Identify lego sets with high or low value for LEGO buyers, using the differences betyouen actual and predicted prices
+* [Log the target variable](https://www.codegrepper.com/code-examples/python/log+transform+pandas+dataframe) and see if that improves the model assumptions.
 * Conduct statistical tests using the numeric features in the dataset to make inferences about the population of LEGO sets
 
 ## Summary
