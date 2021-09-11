@@ -367,15 +367,12 @@ df.isna().sum()
     List Price           40
     dtype: int64
 
-We have four columns that contain null values. Of those four, `List Price`, which is our dependent variable, is probably the most concerning. 
 
-In the cell below, drop all rows where `List Price` is null.
 
 You have four columns that contain null values. Of those four, `List Price`, which is your dependent variable, is probably the most concerning. 
 
 In the cell below, drop all rows where `List Price` is null.
 
-To make things easier moving forward, in the cell below, reformat the column names so spaces have been replaced with underscores and the text has been lowered.
 
 ```python
 df = df.dropna(subset=['List Price'])
@@ -458,7 +455,6 @@ To do this you must:
 2. Now that you've calculate the mean of `list_price`, create a list with the same length as the `list_price` column where every value in the list is the calculated mean.
     - Store this list in the variable `baseline_preds`.
 
-The baseline model's predictions, on average, are mispredicted by about \$70.
 
 ```python
 from sklearn.metrics import r2_score, mean_squared_error
@@ -483,7 +479,6 @@ print('Baseline RMSE:', baseline_rmse)
     Baseline R^2:  0.0
     Baseline RMSE: 70.31606908300459
 
-```python
 
 Now that you have baseline predictions, you can use the predictions to calculate metrics about the model's performance. 
 
@@ -512,7 +507,6 @@ import seaborn as sns
 import numpy as np
 ```
 
-![png](index_files/output_35_0.png)
 
 ```python
 
@@ -544,11 +538,9 @@ sns.heatmap(
 ax.set_title("Heatmap of Correlation Between Attributes (Including Target)");
 ```
 
-Assuming you correctly identified `piece_count` (the number of pieces in the LEGO set) as the most correlated feature, you should have a scatter plot that shows a fairly clear linear relationship between that feature and the target. It looks like we are ready to proceed with making our baseline model without any additional transformation.
 
 ![png](index_files/output_31_0.png)
 
-Now, we'll build a linear regression model using just that feature. 
 
 Based on the heatmap, which feature is most strongly correlated with the target (`list_price`)? In other words, which feature has the strongest positive or negative correlation — the correlation with the greatest magnitude?
 
@@ -571,7 +563,6 @@ ax.set_ylabel("listing price")
 ax.set_title("Most Correlated Feature vs. Listing Price");
 ```
 
-# 4. Interpret the Simple Linear Regression Model
 
 ![png](index_files/output_35_0.png)
 
@@ -593,7 +584,6 @@ model = smf.ols('list_price ~ piece_count', df).fit()
 model.summary()
 ```
 
-### Interpret the model metrics
 
 
 
@@ -653,10 +643,7 @@ model.summary()
 </tr>
 </table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 
-**RMSE**:
 
-- The simple linear regression model's predictions are off, on average, by about \\$35
-- The simple linear regression model's predictions are about \\$35 more accurate than the baseline model.
 
 # 4. Interpret the Simple Linear Regression Model
 
@@ -775,7 +762,6 @@ ax.set_xlabel("Predicted Value")
 ax.set_ylabel("Actual - Predicted Value");
 ```
 
-### Linear Regression Assumptions Conclusion
 
 ![png](index_files/output_58_0.png)
 
